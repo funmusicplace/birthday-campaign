@@ -10,6 +10,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@mirlo/mirlo-api-client": "^1.0.7",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0"
