@@ -1,6 +1,6 @@
 "use client";
 
-function FieldRadio({ className, label, name, value, required }) {
+function FieldRadio({ className, label, name, value, required }: { className?: string; label?: string; name: string; value: string; required?: boolean; }) {
   return (
     <div className={`relative ${className || ""}`}>
       <input
@@ -21,7 +21,7 @@ function FieldRadio({ className, label, name, value, required }) {
   );
 }
 
-export default function Form({ className }) {
+export default function Form({ className }: { className?: string }) {
   return (
     <form
       className={`bg-white p-4 md:p-8 rounded-lg w-full flex flex-col gap-4 ${className || ""}`}

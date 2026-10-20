@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  console.log(cubano);
   return (
     <html lang="en" className={`${cubano.className} h-full`}>
       <body className="min-h-full flex flex-col">{children}</body>

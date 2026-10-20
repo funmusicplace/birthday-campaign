@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import Form from "./form";
 
-function SectionInfo({ className }) {
+function SectionInfo({ className }: { className: string }) {
   return (
     <section className={`py-8 flex flex-col gap-8 ${className || ""}`}>
       <div>
