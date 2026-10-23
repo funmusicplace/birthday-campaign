@@ -56,7 +56,7 @@ function SectionInfo({ className }: { className: string }) {
 
 export default function Home() {
   return (
-    <div className="p-4 md:p-8 lg:p-16 xl:p-32 bg-[#71A2B6]">
+    <div className="p-4 md:p-8 lg:p-16 xl:p-32 bg-[#99ccdd]">
       <header>
         <Image alt="Mirlo" src="/logo.svg" width={101} height={34} />
       </header>
