@@ -61,8 +61,8 @@ export default function Form({ className }: { className?: string }) {
       <fieldset>
         <legend className="text-sm font-bold">Select a donation type</legend>
         <div className="mt-1 w-full grid grid-cols-2 gap-2">
-          <FieldRadio name="type" value="annual" required />
-          <FieldRadio name="type" value="one-time" required />
+          <FieldRadio name="type" required value="annual" />
+          <FieldRadio name="type" required value="one-time" />
         </div>
       </fieldset>
       <fieldset>
@@ -79,6 +79,7 @@ export default function Form({ className }: { className?: string }) {
                   setAmountUsdDollars(event.target.value);
                   setIsCustomMode(false);
                 }}
+                required
                 value={defaultAmount}
               />
             );
@@ -94,6 +95,7 @@ export default function Form({ className }: { className?: string }) {
             onChange={(event) => {
               setIsCustomMode(true);
             }}
+            required
             type="radio"
             value="custom"
           />
@@ -120,6 +122,7 @@ export default function Form({ className }: { className?: string }) {
                 }
               }}
               placeholder="Custom"
+              required={isCustomMode}
               type="text"
             />
           </label>
