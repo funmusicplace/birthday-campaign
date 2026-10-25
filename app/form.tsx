@@ -99,16 +99,16 @@ export default function Form({ className }: { className?: string }) {
             type="radio"
             value="custom"
           />
-          <label className="flex justify-center items-center p-2 h-full capitalize text-center bg-gray-100 hover:bg-gray-200 border-4 border-white rounded-md [:checked+&]:border-black [:checked+&]:font-bold cursor-text">
+          <label className="group flex justify-center items-center p-2 h-full capitalize text-center bg-gray-100 hover:bg-gray-200 border-4 border-white rounded-md [:checked+&]:border-black [:checked+&]:font-bold cursor-text">
             <span
               className={
-                customAmountUsdDollars ? "" : "hidden in-focus-within:inline"
+                customAmountUsdDollars ? "" : "hidden group-focus-within:inline"
               }
             >
               $
             </span>
             <input
-              className="field-sizing-content min-w-0 max-w-full focus:outline-none text-center placeholder:text-black placeholder:font-normal"
+              className="field-sizing-content min-w-[2px] max-w-full focus:outline-none text-center placeholder:text-black placeholder:font-normal"
               onBlur={(event) => {
                 if (!event.target.value) {
                   event.target.placeholder = "Custom";
