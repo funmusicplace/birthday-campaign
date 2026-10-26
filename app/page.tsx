@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import Form from "./form";
+import Posts from "./posts";
 import Progress from "./progress";
 
 const socialLinks = [
@@ -108,6 +109,7 @@ function SectionInfo({ className }: { className: string }) {
           that consolidate power in one place.
         </p>
       </div>
+      <Posts />
       <div className="flex flex-col gap-1 md:gap-2">
         <h2>Join the conversation</h2>
         <ul className="flex flex-wrap gap-4">
