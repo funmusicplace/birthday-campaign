@@ -1,22 +1,25 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import Form from "./form";
+import Progress from "./progress";
 
 function SectionInfo({ className }: { className: string }) {
   return (
     <section className={`py-8 flex flex-col gap-8 ${className || ""}`}>
-      <div>
-        <h1>Feed the birds</h1>
-        <p className={`font-bold text-xl`}>
-          Support another year of independent music on Mirlo
-        </p>
+      <div className="flex flex-col gap-4 md:gap-8">
+        <div>
+          <h1>Feed the birds</h1>
+          <p className={`font-bold text-xl`}>
+            Support another year of independent music on Mirlo
+          </p>
+        </div>
         <a
-          className="mt-4 block lg:hidden w-full p-2 rounded-md text-center bg-mi-red hover:bg-black text-white"
+          className="block lg:hidden w-full p-2 rounded-md text-center bg-mi-red hover:bg-black text-white"
           href="#form"
         >
           Donate now
         </a>
+        <Progress />
       </div>
       <div className={`bg-black opacity-10 h-[30vh]`}></div>
       <div className={`flex flex-col gap-1 md:gap-2`}>
