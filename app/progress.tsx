@@ -62,7 +62,14 @@ export default function Progress() {
               new Date(a.datePurchased).getTime(),
           ),
         );
-        setTotalSubscriptions(response.totalSupporters);
+        setTotalSubscriptions(
+          (
+            response as {
+              results: SupporterSubscription[];
+              totalSupporters: number;
+            }
+          ).totalSupporters,
+        );
       })
       .catch((error) => {
         console.error(error);
