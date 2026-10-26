@@ -1,10 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
+import api from "./api";
 import { formatCurrency } from "./utils";
 
+const ARTIST_ID = process.env.NEXT_PUBLIC_ARTIST_ID || "4";
 const defaultAmountsUsdCents = [2500, 5000, 10000, 25000, 50000];
+
+interface SubscriptionTier {
+  allowVariable?: boolean;
+  id: number;
+  interval: "MONTH" | "YEAR";
+  minAmount?: number;
+}
 
 function FieldRadio({
   checked,
@@ -46,14 +55,80 @@ function FieldRadio({
 }
 
 export default function Form({ className }: { className?: string }) {
+  const [annualTier, setAnnualTier] = useState<SubscriptionTier>();
+  const [donationType, setDonationType] = useState<"annual" | "one-time">();
   const [amountUsdCents, setAmountUsdCents] = useState<number>();
   const [customAmountUsdCents, setCustomAmountUsdCents] = useState<number>();
   const [isCustomMode, setIsCustomMode] = useState(false);
+
+  useEffect(() => {
+    api
+      .get<{ subscriptionTiers: SubscriptionTier[] }>(`artists/${ARTIST_ID}`)
+      .then((response) => {
+        const firstAnnualTier = response.result.subscriptionTiers.find(
+          (tier) =>
+            tier.interval === "YEAR" &&
+            tier.minAmount === 100 &&
+            tier.allowVariable,
+        );
+        setAnnualTier(firstAnnualTier);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!amountUsdCents) {
+      return;
+    }
+
+    const item =
+      donationType === "one-time"
+        ? { type: "tip" as const, amount: amountUsdCents }
+        : annualTier
+          ? {
+              type: "subscription" as const,
+              tierId: annualTier.id,
+              amount: amountUsdCents,
+            }
+          : undefined;
+
+    if (!item) {
+      return;
+    }
+
+    api
+      .post<
+        {
+          artistId: number;
+          hosted: boolean;
+          items: (typeof item)[];
+          successUrl: string;
+        },
+        { redirectUrl?: string }
+      >("purchase", {
+        artistId: Number(ARTIST_ID),
+        hosted: true,
+        items: [item],
+        successUrl: `${window.location.origin}${window.location.pathname}?success=true`,
+      })
+      .then((response) => {
+        if (response.redirectUrl) {
+          window.location.href = response.redirectUrl;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   return (
     <form
       className={`bg-white p-4 md:p-8 rounded-lg w-full flex flex-col gap-4 ${className || ""}`}
       id="form"
+      onSubmit={handleSubmit}
     >
       <h2>Join the party!</h2>
       <p>
@@ -63,8 +138,20 @@ export default function Form({ className }: { className?: string }) {
       <fieldset>
         <legend className="text-sm font-bold">Select a donation type</legend>
         <div className="mt-1 w-full grid grid-cols-2 gap-2">
-          <FieldRadio name="type" required value="annual" />
-          <FieldRadio name="type" required value="one-time" />
+          <FieldRadio
+            checked={donationType === "annual"}
+            name="type"
+            onChange={() => setDonationType("annual")}
+            required
+            value="annual"
+          />
+          <FieldRadio
+            checked={donationType === "one-time"}
+            name="type"
+            onChange={() => setDonationType("one-time")}
+            required
+            value="one-time"
+          />
         </div>
       </fieldset>
       <fieldset>
