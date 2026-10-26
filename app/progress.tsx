@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import api from "./api";
+import { formatCurrency } from "./utils";
 
 const ARTIST_ID = process.env.NEXT_PUBLIC_ARTIST_ID || "4";
 const CAMPAIGN_START_DATE =
@@ -42,13 +43,6 @@ function formatTimeAgo(dateString: string): string {
   return dateString;
 }
 
-export const formatCurrency = (amount: number, currency?: string) => {
-  return (amount / 100).toLocaleString("en-US", {
-    style: "currency",
-    currency: currency ?? "USD",
-  });
-};
-
 export default function Progress() {
   const [subscriptions, setSubscriptions] = useState<SupporterSubscription[]>(
     [],
@@ -75,9 +69,9 @@ export default function Progress() {
       });
   }, []);
 
-	if (totalSubscriptions === 0) {
-		return null;
-	}
+  if (totalSubscriptions === 0) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -101,10 +95,10 @@ export default function Progress() {
         {subscriptions.slice(0, 5).map((subscription, index) => {
           return (
             <li
-							className="flex justify-between p-1"
+              className="flex justify-between p-1"
               key={`${subscription.name}-${subscription.datePurchased}-${index}`}
             >
-              <span>Someone donated{" "}{formatCurrency(25)}</span>
+              <span>Someone donated {formatCurrency(subscription.amount)}</span>
               <span>{formatTimeAgo(subscription.datePurchased)}</span>
             </li>
           );

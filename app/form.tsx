@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
-const defaultAmountsUsdDollars = ["25", "50", "100", "250", "500"];
+import { formatCurrency } from "./utils";
+
+const defaultAmountsUsdCents = [2500, 5000, 10000, 25000, 50000];
 
 function FieldRadio({
   checked,
@@ -19,7 +21,7 @@ function FieldRadio({
   name: string;
   onChange?: (event: any) => void;
   required?: boolean;
-  value: string;
+  value: string | number;
 }) {
   return (
     <div className={`relative ${className || ""}`}>
@@ -44,8 +46,8 @@ function FieldRadio({
 }
 
 export default function Form({ className }: { className?: string }) {
-  const [amountUsdDollars, setAmountUsdDollars] = useState("");
-  const [customAmountUsdDollars, setCustomAmountUsdDollars] = useState("");
+  const [amountUsdCents, setAmountUsdCents] = useState<number>();
+  const [customAmountUsdCents, setCustomAmountUsdCents] = useState<number>();
   const [isCustomMode, setIsCustomMode] = useState(false);
 
   return (
@@ -68,15 +70,15 @@ export default function Form({ className }: { className?: string }) {
       <fieldset>
         <legend className="text-sm font-bold">Select or enter an amount</legend>
         <div className="mt-1 w-full grid grid-cols-3 gap-2">
-          {defaultAmountsUsdDollars.map((defaultAmount) => {
+          {defaultAmountsUsdCents.map((defaultAmount) => {
             return (
               <FieldRadio
-                checked={!isCustomMode && defaultAmount === amountUsdDollars}
+                checked={!isCustomMode && defaultAmount === amountUsdCents}
                 key={defaultAmount}
-                label={`\$${defaultAmount}`}
+                label={formatCurrency(defaultAmount)}
                 name="amount"
                 onChange={(event) => {
-                  setAmountUsdDollars(event.target.value);
+                  setAmountUsdCents(Number(event.target.value));
                   setIsCustomMode(false);
                 }}
                 required
@@ -86,7 +88,9 @@ export default function Form({ className }: { className?: string }) {
           })}
           <input
             aria-label={
-              customAmountUsdDollars ? `\$${customAmountUsdDollars}` : "Custom"
+              customAmountUsdCents
+                ? formatCurrency(customAmountUsdCents)
+                : "Custom"
             }
             aria-description="Go to the next field to enter a custom amount."
             checked={isCustomMode}
@@ -102,7 +106,7 @@ export default function Form({ className }: { className?: string }) {
           <label className="group flex justify-center items-center p-2 h-full capitalize text-center bg-gray-100 hover:bg-gray-200 border-4 border-white rounded-md [:checked+&]:border-black [:checked+&]:font-bold cursor-text">
             <span
               className={
-                customAmountUsdDollars ? "" : "hidden group-focus-within:inline"
+                customAmountUsdCents ? "" : "hidden group-focus-within:inline"
               }
             >
               $
@@ -115,8 +119,11 @@ export default function Form({ className }: { className?: string }) {
                 }
               }}
               onChange={(event) => {
-                setAmountUsdDollars(event.target.value);
-                setCustomAmountUsdDollars(event.target.value);
+                const cents = event.target.value
+                  ? Number(event.target.value) * 100
+                  : undefined;
+                setAmountUsdCents(cents);
+                setCustomAmountUsdCents(cents);
                 setIsCustomMode(true);
               }}
               onFocus={(event) => {
@@ -124,7 +131,7 @@ export default function Form({ className }: { className?: string }) {
                 setIsCustomMode(true);
 
                 if (event.target.value) {
-                  setAmountUsdDollars(event.target.value);
+                  setAmountUsdCents(Number(event.target.value) * 100);
                 }
               }}
               placeholder="Custom"
