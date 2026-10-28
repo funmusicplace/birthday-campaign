@@ -10,11 +10,13 @@ const CAMPAIGN_START_DATE =
   process.env.NEXT_PUBLIC_CAMPAIGN_START_DATE || "2026-11-01";
 const CAMPAIGN_GOAL = Number(process.env.NEXT_PUBLIC_CAMPAIGN_GOAL) || 100;
 
-interface SupporterSubscription {
-  name: string;
+interface SupporterDonation {
+  id: string;
   amount: number;
-  message?: string;
+  currency?: string;
   datePurchased: string;
+  tips?: unknown[];
+  artistUserSubscriptionCharges?: unknown[];
 }
 
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "always" });
@@ -44,39 +46,36 @@ function formatTimeAgo(dateString: string): string {
 }
 
 export default function Progress() {
-  const [subscriptions, setSubscriptions] = useState<SupporterSubscription[]>(
-    [],
-  );
-  const [totalSubscriptions, setTotalSubscriptions] = useState(0);
+  const [donations, setDonations] = useState<SupporterDonation[]>([]);
 
   useEffect(() => {
     api
-      .getMany<SupporterSubscription>(`artists/${ARTIST_ID}/supporters`, {
+      .getMany<SupporterDonation>(`artists/${ARTIST_ID}/supporters`, {
         sinceDate: CAMPAIGN_START_DATE,
       })
       .then((response) => {
-        setSubscriptions(
-          [...response.results].sort(
+        const filteredDonations = response.results
+          .filter(
+            (item) =>
+              (item.tips && item.tips.length > 0) ||
+              (item.artistUserSubscriptionCharges &&
+                item.artistUserSubscriptionCharges.length > 0),
+          )
+          .sort(
             (a, b) =>
               new Date(b.datePurchased).getTime() -
               new Date(a.datePurchased).getTime(),
-          ),
-        );
-        setTotalSubscriptions(
-          (
-            response as {
-              results: SupporterSubscription[];
-              totalSupporters: number;
-            }
-          ).totalSupporters,
-        );
+          );
+        setDonations(filteredDonations);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  if (totalSubscriptions === 0) {
+  const totalDonations = donations.length;
+
+  if (totalDonations === 0) {
     return null;
   }
 
@@ -84,29 +83,29 @@ export default function Progress() {
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-2">
         <label className="font-bold" htmlFor="progress">
-          {totalSubscriptions} of {CAMPAIGN_GOAL} supporters
+          {totalDonations} of {CAMPAIGN_GOAL} supporters
         </label>
         <div className="relative w-full h-5 bg-[rgba(0,0,0,.1)] rounded-full overflow-hidden">
           <div
-            aria-valuenow={totalSubscriptions}
+            aria-valuenow={totalDonations}
             aria-valuemax={CAMPAIGN_GOAL}
             aria-valuemin={0}
             className="h-full bg-black transition-width ease-in-out duration-750 relative"
             id="progress"
             role="progressbar"
-            style={{ width: `${(totalSubscriptions / CAMPAIGN_GOAL) * 100}%` }}
+            style={{ width: `${(totalDonations / CAMPAIGN_GOAL) * 100}%` }}
           ></div>
         </div>
       </div>
       <ul className="flex flex-col divide-y divide-[rgba(0,0,0,.25)]">
-        {subscriptions.slice(0, 5).map((subscription, index) => {
+        {donations.slice(0, 5).map((donation) => {
           return (
-            <li
-              className="flex justify-between p-1"
-              key={`${subscription.name}-${subscription.datePurchased}-${index}`}
-            >
-              <span>Someone donated {formatCurrency(subscription.amount)}</span>
-              <span>{formatTimeAgo(subscription.datePurchased)}</span>
+            <li className="flex justify-between p-1" key={donation.id}>
+              <span>
+                Someone donated{" "}
+                {formatCurrency(donation.amount, donation.currency)}
+              </span>
+              <span>{formatTimeAgo(donation.datePurchased)}</span>
             </li>
           );
         })}
