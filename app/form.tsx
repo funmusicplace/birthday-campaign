@@ -60,6 +60,7 @@ export default function Form({ className }: { className?: string }) {
   const [amountUsdCents, setAmountUsdCents] = useState<number>();
   const [customAmountUsdCents, setCustomAmountUsdCents] = useState<number>();
   const [isCustomMode, setIsCustomMode] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
 
   useEffect(() => {
     api
@@ -80,7 +81,7 @@ export default function Form({ className }: { className?: string }) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!amountUsdCents) {
+    if (didSubmit || !amountUsdCents) {
       return;
     }
 
@@ -98,6 +99,8 @@ export default function Form({ className }: { className?: string }) {
     if (!item) {
       return;
     }
+
+    setDidSubmit(true);
 
     api
       .post<
@@ -117,10 +120,13 @@ export default function Form({ className }: { className?: string }) {
       .then((response) => {
         if (response.redirectUrl) {
           window.location.href = response.redirectUrl;
+        } else {
+          setDidSubmit(false);
         }
       })
       .catch((error) => {
         console.error(error);
+        setDidSubmit(false);
       });
   }
 
@@ -228,8 +234,11 @@ export default function Form({ className }: { className?: string }) {
           </label>
         </div>
       </fieldset>
-      <button className="p-2 rounded-md bg-mi-red hover:bg-black text-white">
-        Continue to pay
+      <button
+        className="p-2 rounded-md bg-mi-red hover:bg-black text-white"
+        type="submit"
+      >
+        {didSubmit ? "Loading…" : "Continue to pay"}
       </button>
     </form>
   );
