@@ -45,7 +45,7 @@ function FieldRadio({
         value={value}
       />
       <label
-        className="block p-2 rounded-md h-full capitalize text-center bg-gray-100 hover:bg-gray-200 border-4 border-white [:checked+&]:border-gray-800 [:checked+&]:font-bold"
+        className="block p-2 rounded-md h-full capitalize text-center bg-stone-100 hover:bg-stone-200 border-4 border-white [:checked+&]:border-stone-800 [:checked+&]:font-bold"
         htmlFor={`input-${name}-${value}`}
       >
         {label || value}
@@ -190,7 +190,7 @@ export default function Form({ className }: { className?: string }) {
             type="radio"
             value="custom"
           />
-          <label className="group flex justify-center items-center p-2 h-full capitalize text-center bg-gray-100 hover:bg-gray-200 border-4 border-white rounded-md [:checked+&]:border-black [:checked+&]:font-bold cursor-text">
+          <label className="group flex justify-center items-center p-2 h-full capitalize text-center bg-stone-100 hover:bg-stone-200 border-4 border-white rounded-md [:checked+&]:border-stone-800 [:checked+&]:font-bold cursor-text">
             <span
               className={
                 customAmountUsdCents ? "" : "hidden group-focus-within:inline"

@@ -59,26 +59,40 @@ const socialLinks = [
   },
 ];
 
-function SectionInfo({ className }: { className: string }) {
+function SectionInfo({ className }: { className?: string }) {
   return (
-    <section className={`py-8 flex flex-col gap-8 ${className || ""}`}>
-      <div className="flex flex-col gap-4 md:gap-8">
-        <div>
-          <h1>Feed the birds</h1>
-          <p className={`font-bold text-xl`}>
-            Support another year of independent music on Mirlo
-          </p>
+    <section className={`contents ${className || ""}`}>
+      <div className="col-span-full row-start-1 relative left-1/2 -translate-x-1/2 w-screen -mt-[calc(1rem+34px)] md:-mt-[calc(2rem+34px)] lg:-mt-[calc(4rem+34px)] xl:-mt-[calc(8rem+34px)] min-h-[80vh] bg-[rgb(106,129,99)]" />
+      <div className="z-10 col-start-1 row-start-1 py-8 flex flex-col gap-8 text-white">
+        <div className="flex flex-col gap-4 md:gap-8">
+          <div>
+            <h1>Feed the birds</h1>
+            <p className={`font-bold text-xl`}>
+              Support another year of independent music on Mirlo
+            </p>
+          </div>
+          <a
+            className="block lg:hidden w-full p-2 rounded-md text-center bg-mi-red hover:bg-black text-white"
+            href="#form"
+          >
+            Donate now
+          </a>
+          <Progress />
         </div>
-        <a
-          className="block lg:hidden w-full p-2 rounded-md text-center bg-mi-red hover:bg-black text-white"
-          href="#form"
-        >
-          Donate now
-        </a>
-        <Progress />
+        <div className="relative mt-28 lg:mt-56">
+          <Image
+            alt=""
+            className="pointer-events-none absolute -top-[175px] md:-top-[300px] -left-[50px] z-[-1] max-w-none w-[calc(100%+50px)] h-auto"
+            height={2894}
+loading="eager"
+            src="/hero.png"
+            unoptimized
+            width={2478}
+          />
+          <div className="bg-[rgb(233,205,74)] aspect-4/3 w-full"></div>
+        </div>
       </div>
-      <div className={`bg-black opacity-10 h-[30vh]`}></div>
-      <div className={`flex flex-col gap-1 md:gap-2`}>
+      <div className="col-start-1 row-start-2 flex flex-col gap-1 md:gap-2">
         <h2>Mirlo is turning 3!</h2>
         <p>
           Founded in 2023, Mirlo is a cooperatively-run and open-source music
@@ -86,47 +100,49 @@ function SectionInfo({ className }: { className: string }) {
           labels. Now compatible with Fairplayer.
         </p>
       </div>
-      <div className={`flex flex-col gap-1 md:gap-2`}>
-        <h2>About this fundraiser: Feed the Birds 2026</h2>
-        <p>
-          What, where, how, when, why. We feel proud to have created a fun music
-          place that gives musicians and listeners greater autonomy, through a
-          transparent fee structure, community features, our burgeoning
-          federation efforts and our work towards letting musicians host their
-          *own* Mirlo, putting folks in control of how they present their sonic
-          output online. We have also enjoyed sharing music from Mirlo as part
-          of our ongoing editorial direction, helping musicians on our platform
-          find an audience.
-        </p>
-        <p>
-          To date, we have largely achieved this as a volunteer team, so imagine
-          what we could do with additional funding! To that end, our goal shows
-          what we think are pretty reasonable running costs and if you are able
-          to support us, it would enable us to continue improving Mirlo and
-          delve deeper into our work joining other platforms together into one
-          network that benefits musicians, listeners and anyone who wants
-          culture to be free of corporate interests and the kinds of structures
-          that consolidate power in one place.
-        </p>
-      </div>
-      <Posts />
-      <div className="flex flex-col gap-1 md:gap-2">
-        <h2>Join the conversation</h2>
-        <ul className="flex flex-wrap gap-4">
-          {socialLinks.map((link) => (
-            <li key={link.name}>
-              <a
-                className="flex items-center gap-2 hover:underline"
-                href={link.href}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {link.icon}
-                <span>{link.name}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+      <div className="col-start-1 row-start-4 lg:row-start-3 pb-8 flex flex-col gap-8">
+        <div className={`flex flex-col gap-1 md:gap-2`}>
+          <h2>About this fundraiser: Feed the Birds 2026</h2>
+          <p>
+            What, where, how, when, why. We feel proud to have created a fun
+            music place that gives musicians and listeners greater autonomy,
+            through a transparent fee structure, community features, our
+            burgeoning federation efforts and our work towards letting musicians
+            host their *own* Mirlo, putting folks in control of how they present
+            their sonic output online. We have also enjoyed sharing music from
+            Mirlo as part of our ongoing editorial direction, helping musicians
+            on our platform find an audience.
+          </p>
+          <p>
+            To date, we have largely achieved this as a volunteer team, so
+            imagine what we could do with additional funding! To that end, our
+            goal shows what we think are pretty reasonable running costs and if
+            you are able to support us, it would enable us to continue improving
+            Mirlo and delve deeper into our work joining other platforms
+            together into one network that benefits musicians, listeners and
+            anyone who wants culture to be free of corporate interests and the
+            kinds of structures that consolidate power in one place.
+          </p>
+        </div>
+        <Posts />
+        <div className="flex flex-col gap-1 md:gap-2">
+          <h2>Join the conversation</h2>
+          <ul className="flex flex-wrap gap-4">
+            {socialLinks.map((link) => (
+              <li key={link.name}>
+                <a
+                  className="flex items-center gap-2 hover:underline"
+                  href={link.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {link.icon}
+                  <span>{link.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
@@ -134,16 +150,24 @@ function SectionInfo({ className }: { className: string }) {
 
 export default function Home() {
   return (
-    <div className="p-4 md:p-8 lg:p-16 xl:p-32 bg-[rgb(106,129,99)]">
-      <header>
-        <Image alt="Mirlo" src="/logo.svg" width={101} height={34} />
-      </header>
-      <main>
-        <div className="relative flex flex-col gap-8 lg:flex-row lg:gap-16">
-          <SectionInfo className="flex-1/2" />
-          <Form className="flex-1/2 self-start sticky inset-bs-4 md:inset-bs-8 lg:inset-bs-16 xl:inset-bs-32" />
-        </div>
-      </main>
+    <div className="overflow-x-clip p-4 md:p-8 lg:p-16 xl:p-32 bg-stone-200">
+      <div className="max-w-[1200px] mx-auto">
+        <header className="relative z-10">
+          <Image
+            alt="Mirlo"
+            className="invert"
+            src="/logo.svg"
+            width={101}
+            height={34}
+          />
+        </header>
+        <main>
+          <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-x-16">
+            <SectionInfo />
+            <Form className="z-10 row-start-3 lg:col-start-2 lg:row-start-1 lg:row-span-3 self-start lg:sticky inset-bs-4 md:inset-bs-8 lg:inset-bs-16 xl:inset-bs-32" />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
