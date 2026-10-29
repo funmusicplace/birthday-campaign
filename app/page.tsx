@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import Confetti from "./confetti";
 import Form from "./form";
 import Posts from "./posts";
 import Progress from "./progress";
@@ -151,6 +152,7 @@ loading="eager"
 export default function Home() {
   return (
     <div className="overflow-x-clip p-4 md:p-8 lg:p-16 xl:p-32 bg-stone-200">
+      <Confetti />
       <div className="max-w-[1200px] mx-auto">
         <header className="relative z-10">
           <Image

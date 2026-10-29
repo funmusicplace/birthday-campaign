@@ -5,3 +5,11 @@ export const formatCurrency = (amount: number, currency?: string) => {
     trailingZeroDisplay: "stripIfInteger",
   });
 };
+
+export const checkHasPurchased = () => {
+  try {
+    return localStorage.getItem("purchased") === "true";
+  } catch {
+    return false;
+  }
+};

@@ -3,7 +3,7 @@
 import { type FormEvent, useEffect, useState } from "react";
 
 import api from "./api";
-import { formatCurrency } from "./utils";
+import { checkHasPurchased, formatCurrency } from "./utils";
 
 const ARTIST_ID = process.env.NEXT_PUBLIC_ARTIST_ID || "4";
 const defaultAmountsUsdCents = [2500, 5000, 10000, 25000, 50000];
@@ -61,8 +61,19 @@ export default function Form({ className }: { className?: string }) {
   const [customAmountUsdCents, setCustomAmountUsdCents] = useState<number>();
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>();
+  const [didCopy, setDidCopy] = useState(false);
 
   useEffect(() => {
+    const hasPurchased = checkHasPurchased();
+    const params = new URLSearchParams(window.location.search);
+    const success = hasPurchased && params.get("success") === "true";
+    setIsSuccess(success);
+
+    if (success) {
+      return;
+    }
+
     api
       .get<{ subscriptionTiers: SubscriptionTier[] }>(`artists/${ARTIST_ID}`)
       .then((response) => {
@@ -101,6 +112,7 @@ export default function Form({ className }: { className?: string }) {
     }
 
     setDidSubmit(true);
+    localStorage.setItem("purchased", "true");
 
     api
       .post<
@@ -128,6 +140,38 @@ export default function Form({ className }: { className?: string }) {
         console.error(error);
         setDidSubmit(false);
       });
+  }
+
+  if (isSuccess === undefined) {
+    return null;
+  }
+
+  if (isSuccess) {
+    return (
+      <div
+        className={`bg-white p-4 md:p-8 rounded-lg w-full flex flex-col gap-4 ${className || ""}`}
+        id="form"
+      >
+        <h2>Thank you!</h2>
+        <p>
+          Your support helps sustain another year of independent music on Mirlo.
+          Help us reach our goal by sharing this fundraiser with your friends!
+        </p>
+        <button
+          className="p-2 rounded-md bg-mi-red hover:bg-black text-white"
+          onClick={() => {
+            const url = `${window.location.origin}${window.location.pathname}`;
+            navigator.clipboard.writeText(url).then(() => {
+              setDidCopy(true);
+              setTimeout(() => setDidCopy(false), 2000);
+            });
+          }}
+          type="button"
+        >
+          {didCopy ? "Copied!" : "Copy link to share"}
+        </button>
+      </div>
+    );
   }
 
   return (
