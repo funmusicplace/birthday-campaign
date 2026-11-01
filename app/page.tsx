@@ -75,10 +75,10 @@ function SectionInfo({ className }: { className?: string }) {
           <DonateButton />
           <Progress />
         </div>
-        <div className="relative mt-28 lg:mt-56">
+        <div className="relative mt-28 lg:mt-40 xl:mt-56">
           <Image
             alt=""
-            className="pointer-events-none absolute -top-[175px] md:-top-[300px] -left-[50px] z-[-1] max-w-none w-[calc(100%+50px)] h-auto"
+            className="pointer-events-none absolute -top-[50vw] md:-top-[380px] lg:-top-[220px] [@media(min-width:1100px)]:-top-[22vw] [@media(min-width:1200px)]:-top-[20vw] [@media(min-width:1366px)]:-top-[300px] -left-[50px] z-[-1] max-w-none w-[calc(100%+50px)] h-auto"
             height={2894}
 loading="eager"
             src="/hero.png"
@@ -146,9 +146,9 @@ loading="eager"
 
 export default function Home() {
   return (
-    <div className="overflow-x-clip p-4 md:p-8 lg:p-16 xl:p-32 bg-stone-200">
+    <div className="overflow-x-clip p-4 md:p-8 lg:p-16 xl:p-24 bg-stone-200">
       <Confetti />
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-screen-xl mx-auto">
         <header className="relative z-10">
           <Image
             alt="Mirlo"
