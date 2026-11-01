@@ -54,6 +54,63 @@ function FieldRadio({
   );
 }
 
+function ThankYou({ className, id }: { className?: string; id?: string }) {
+  const [didCopy, setDidCopy] = useState(false);
+
+  return (
+    <div
+      className={`bg-white text-foreground p-4 md:p-8 rounded-lg w-full flex-col gap-4 ${className || "flex"}`}
+      id={id}
+    >
+      <h2>Thank you!</h2>
+      <p>
+        Your support helps sustain another year of independent music on Mirlo.
+        Help us reach our goal by sharing this fundraiser with your friends!
+      </p>
+      <button
+        className="p-2 rounded-md bg-mi-red hover:bg-black text-white"
+        onClick={() => {
+          const url = `${window.location.origin}${window.location.pathname}`;
+          navigator.clipboard.writeText(url).then(() => {
+            setDidCopy(true);
+            setTimeout(() => setDidCopy(false), 2000);
+          });
+        }}
+        type="button"
+      >
+        {didCopy ? "Copied!" : "Copy link to share"}
+      </button>
+    </div>
+  );
+}
+
+export function DonateButton() {
+  const [isSuccess, setIsSuccess] = useState<boolean>();
+
+  useEffect(() => {
+    const hasPurchased = checkHasPurchased();
+    const params = new URLSearchParams(window.location.search);
+    setIsSuccess(hasPurchased && params.get("success") === "true");
+  }, []);
+
+  if (isSuccess === undefined) {
+    return null;
+  }
+
+  if (isSuccess) {
+    return <ThankYou className="flex lg:hidden" />;
+  }
+
+  return (
+    <a
+      className="block lg:hidden w-full p-2 rounded-md text-center bg-mi-red hover:bg-black text-white"
+      href="#form"
+    >
+      Donate now
+    </a>
+  );
+}
+
 export default function Form({ className }: { className?: string }) {
   const [annualTier, setAnnualTier] = useState<SubscriptionTier>();
   const [donationType, setDonationType] = useState<"annual" | "one-time">();
@@ -62,7 +119,6 @@ export default function Form({ className }: { className?: string }) {
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
   const [isSuccess, setIsSuccess] = useState<boolean>();
-  const [didCopy, setDidCopy] = useState(false);
 
   useEffect(() => {
     const hasPurchased = checkHasPurchased();
@@ -148,29 +204,7 @@ export default function Form({ className }: { className?: string }) {
 
   if (isSuccess) {
     return (
-      <div
-        className={`bg-white p-4 md:p-8 rounded-lg w-full flex flex-col gap-4 ${className || ""}`}
-        id="form"
-      >
-        <h2>Thank you!</h2>
-        <p>
-          Your support helps sustain another year of independent music on Mirlo.
-          Help us reach our goal by sharing this fundraiser with your friends!
-        </p>
-        <button
-          className="p-2 rounded-md bg-mi-red hover:bg-black text-white"
-          onClick={() => {
-            const url = `${window.location.origin}${window.location.pathname}`;
-            navigator.clipboard.writeText(url).then(() => {
-              setDidCopy(true);
-              setTimeout(() => setDidCopy(false), 2000);
-            });
-          }}
-          type="button"
-        >
-          {didCopy ? "Copied!" : "Copy link to share"}
-        </button>
-      </div>
+      <ThankYou className={`hidden lg:flex ${className || ""}`} id="form" />
     );
   }
 

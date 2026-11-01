@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import Confetti from "./confetti";
-import Form from "./form";
+import Form, { DonateButton } from "./form";
 import Posts from "./posts";
 import Progress from "./progress";
 
@@ -72,12 +72,7 @@ function SectionInfo({ className }: { className?: string }) {
               Support another year of independent music on Mirlo
             </p>
           </div>
-          <a
-            className="block lg:hidden w-full p-2 rounded-md text-center bg-mi-red hover:bg-black text-white"
-            href="#form"
-          >
-            Donate now
-          </a>
+          <DonateButton />
           <Progress />
         </div>
         <div className="relative mt-28 lg:mt-56">
@@ -101,7 +96,7 @@ loading="eager"
           labels. Now compatible with Fairplayer.
         </p>
       </div>
-      <div className="col-start-1 row-start-4 lg:row-start-3 pb-8 flex flex-col gap-8">
+      <div className="col-start-1 lg:row-start-3 pb-8 flex flex-col gap-8">
         <div className={`flex flex-col gap-1 md:gap-2`}>
           <h2>About this fundraiser: Feed the Birds 2026</h2>
           <p>

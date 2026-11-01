@@ -217,7 +217,8 @@ export default function Confetti() {
 
     const init = () => {
       updateSize();
-      particles = Array.from({ length: 110 }, () =>
+      const particleCount = width < 1024 ? 55 : 110;
+      particles = Array.from({ length: particleCount }, () =>
         createParticle(width, height),
       );
       drawAll();
