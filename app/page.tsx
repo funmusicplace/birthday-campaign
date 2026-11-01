@@ -63,7 +63,7 @@ const socialLinks = [
 function SectionInfo({ className }: { className?: string }) {
   return (
     <section className={`contents ${className || ""}`}>
-      <div className="col-span-full row-start-1 relative left-1/2 -translate-x-1/2 w-screen -mt-[calc(1rem+34px)] md:-mt-[calc(2rem+34px)] lg:-mt-[calc(4rem+34px)] xl:-mt-[calc(8rem+34px)] min-h-[80vh] bg-[rgb(106,129,99)]" />
+      <div className="col-span-full row-start-1 relative left-1/2 -translate-x-1/2 w-screen -mt-[calc(1rem+34px)] md:-mt-[calc(2rem+34px)] lg:-mt-[calc(4rem+34px)] xl:-mt-[calc(8rem+34px)] bg-[rgb(106,129,99)]" />
       <div className="z-10 col-start-1 row-start-1 py-8 flex flex-col gap-8 text-white">
         <div className="flex flex-col gap-4 md:gap-8">
           <div>
