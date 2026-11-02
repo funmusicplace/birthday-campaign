@@ -86,7 +86,12 @@ function SectionInfo({ className }: { className?: string }) {
             width={2478}
           />
           <div className="bg-[rgb(236,187,194)] w-full aspect-16/9">
-            <video className="w-full h-full" controls src="/video.webm"></video>
+            <video
+              className="w-full h-full"
+              controls
+              poster="/video-thumb.jpg"
+              src="/video.webm"
+            ></video>
           </div>
         </div>
       </div>
