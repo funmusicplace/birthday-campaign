@@ -80,7 +80,7 @@ function SectionInfo({ className }: { className?: string }) {
             alt=""
             className="pointer-events-none absolute -top-[50vw] md:-top-[380px] lg:-top-[220px] [@media(min-width:1100px)]:-top-[22vw] [@media(min-width:1200px)]:-top-[20vw] [@media(min-width:1366px)]:-top-[300px] -left-[50px] z-[-1] max-w-none w-[calc(100%+50px)] h-auto"
             height={2894}
-loading="eager"
+            loading="eager"
             src="/hero.png"
             unoptimized
             width={2478}
@@ -89,35 +89,39 @@ loading="eager"
         </div>
       </div>
       <div className="col-start-1 row-start-2 flex flex-col gap-1 md:gap-2">
-        <h2>Mirlo is turning 3!</h2>
         <p>
-          Founded in 2023, Mirlo is a cooperatively-run and open-source music
-          space on the social web where listeners directly support artists and
-          labels. Now compatible with Fairplayer.
+          Three years ago, a handful of musicians started building a home for
+          independent music that no tech company can buy, sell, or squeeze.
+          Since then we’ve built a space that is sustainable, thoughtful, and
+          caring; run by the people who use it. Artists and labels set their own
+          prices, listeners pay them directly, and artists choose how much goes
+          to keeping Mirlo running. We're a part of a growing network of
+          independent music sites, so fans can find your music even if they’ve
+          never heard of us.
         </p>
       </div>
       <div className="col-start-1 lg:row-start-3 pb-8 flex flex-col gap-8">
         <div className={`flex flex-col gap-1 md:gap-2`}>
-          <h2>About this fundraiser: Feed the Birds 2026</h2>
+          <h2>About Feed the Birds 2026</h2>
           <p>
-            What, where, how, when, why. We feel proud to have created a fun
-            music place that gives musicians and listeners greater autonomy,
-            through a transparent fee structure, community features, our
-            burgeoning federation efforts and our work towards letting musicians
-            host their *own* Mirlo, putting folks in control of how they present
-            their sonic output online. We have also enjoyed sharing music from
-            Mirlo as part of our ongoing editorial direction, helping musicians
-            on our platform find an audience.
+            We’re proud of what we’ve built so far: a friendly and transparently
+            run corner of the internet where musicians decide how and where
+            their music is shared and sold, and what it looks like when they do
+            (and we’ve loved discovering and sharing what we find on Mirlo
+            through our Mirlo Mondays). Not only are we putting care and effort
+            into a great musician experience, our hope is that others take what
+            we build and try it out in their own contexts.
           </p>
           <p>
-            To date, we have largely achieved this as a volunteer team, so
-            imagine what we could do with additional funding! To that end, our
-            goal shows what we think are pretty reasonable running costs and if
-            you are able to support us, it would enable us to continue improving
-            Mirlo and delve deeper into our work joining other platforms
-            together into one network that benefits musicians, listeners and
-            anyone who wants culture to be free of corporate interests and the
-            kinds of structures that consolidate power in one place.
+            We’ve done almost all of this as volunteers. In order for this
+            project to truly be billionaire-proof, we couldn't follow the usual
+            route of selling equity to venture capital firms. Our worker
+            cooperative structure ensures that the people who put the time into
+            building it are the ones who have a say in where we go from here.
+            Now imagine what we could do with a little bit of money. Music and
+            culture shouldn’t belong to a few big companies, so we're incredibly
+            grateful for anything you can offer to help us keep the lights on
+            for another year.
           </p>
         </div>
         <Posts />

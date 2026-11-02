@@ -214,10 +214,10 @@ export default function Form({ className }: { className?: string }) {
       id="form"
       onSubmit={handleSubmit}
     >
-      <h2>Join the party!</h2>
+      <h2>Make a gift</h2>
       <p>
-        If you're able, please consider annual donations for maximum sustenance.
-        You can cancel anytime.
+        If you can, an annual gift helps us plan ahead and keep the birds fed
+        year after year. You can cancel anytime.
       </p>
       <fieldset>
         <legend className="text-sm font-bold">Select a donation type</legend>
