@@ -85,7 +85,7 @@ function SectionInfo({ className }: { className?: string }) {
             unoptimized
             width={2478}
           />
-          <div className="bg-[rgb(233,205,74)] aspect-4/3 w-full"></div>
+          <div className="bg-[rgb(236,187,194)] w-full aspect-16/9"><video controls src="/video.webm"></video></div>
         </div>
       </div>
       <div className="col-start-1 row-start-2 flex flex-col gap-1 md:gap-2">
