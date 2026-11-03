@@ -49,17 +49,21 @@ export default function Progress() {
   const [donations, setDonations] = useState<SupporterDonation[]>([]);
 
   useEffect(() => {
+    const startDate = new Date(CAMPAIGN_START_DATE).getTime();
+
     api
-      .getMany<SupporterDonation>(`artists/${ARTIST_ID}/supporters`, {
-        sinceDate: CAMPAIGN_START_DATE,
+      .getMany<SupporterDonation>("manage/sales", {
+        artistIds: ARTIST_ID,
+        take: "500",
       })
       .then((response) => {
         const filteredDonations = response.results
           .filter(
             (item) =>
-              (item.tips && item.tips.length > 0) ||
-              (item.artistUserSubscriptionCharges &&
-                item.artistUserSubscriptionCharges.length > 0),
+              new Date(item.datePurchased).getTime() >= startDate &&
+              ((item.tips && item.tips.length > 0) ||
+                (item.artistUserSubscriptionCharges &&
+                  item.artistUserSubscriptionCharges.length > 0)),
           )
           .sort(
             (a, b) =>
