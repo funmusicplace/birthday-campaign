@@ -1,8 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { connection } from "next/server";
 
 import api from "./api";
+import { clearAccessToken, getAccessToken } from "./oauth";
 import { formatCurrency } from "./utils";
 
 const ARTIST_ID = process.env.NEXT_PUBLIC_ARTIST_ID || "4";
@@ -45,37 +44,45 @@ function formatTimeAgo(dateString: string): string {
   return dateString;
 }
 
-export default function Progress() {
-  const [donations, setDonations] = useState<SupporterDonation[]>([]);
+export default async function Progress() {
+  await connection();
 
-  useEffect(() => {
-    const startDate = new Date(CAMPAIGN_START_DATE).getTime();
+  const startDate = new Date(CAMPAIGN_START_DATE).getTime();
+  let donations: SupporterDonation[] = [];
 
-    api
-      .getMany<SupporterDonation>("manage/sales", {
-        artistIds: ARTIST_ID,
-        take: "500",
-      })
-      .then((response) => {
-        const filteredDonations = response.results
-          .filter(
-            (item) =>
-              new Date(item.datePurchased).getTime() >= startDate &&
-              ((item.tips && item.tips.length > 0) ||
-                (item.artistUserSubscriptionCharges &&
-                  item.artistUserSubscriptionCharges.length > 0)),
-          )
-          .sort(
-            (a, b) =>
-              new Date(b.datePurchased).getTime() -
-              new Date(a.datePurchased).getTime(),
-          );
-        setDonations(filteredDonations);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  try {
+    const accessToken = await getAccessToken();
+    const searchParams = new URLSearchParams({
+      artistIds: ARTIST_ID,
+      take: "500",
+    });
+    const response = await api.request<{ results: SupporterDonation[] }>(
+      `manage/sales?${searchParams.toString()}`,
+      {
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    donations = response.results
+      .filter(
+        (item) =>
+          new Date(item.datePurchased).getTime() >= startDate &&
+          ((item.tips && item.tips.length > 0) ||
+            (item.artistUserSubscriptionCharges &&
+              item.artistUserSubscriptionCharges.length > 0)),
+      )
+      .sort(
+        (a, b) =>
+          new Date(b.datePurchased).getTime() -
+          new Date(a.datePurchased).getTime(),
+      );
+  } catch (error) {
+    clearAccessToken();
+    console.error(error);
+  }
 
   const totalDonations = donations.length;
 
@@ -94,7 +101,7 @@ export default function Progress() {
             aria-valuenow={totalDonations}
             aria-valuemax={CAMPAIGN_GOAL}
             aria-valuemin={0}
-            className="h-full bg-black transition-width ease-in-out duration-750 relative"
+            className="h-full bg-black starting:w-0! transition-[width] ease-in-out duration-750 relative"
             id="progress"
             role="progressbar"
             style={{ width: `${(totalDonations / CAMPAIGN_GOAL) * 100}%` }}
