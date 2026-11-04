@@ -73,7 +73,6 @@ function SectionInfo({ className }: { className?: string }) {
             </p>
           </div>
           <DonateButton />
-          <Progress />
         </div>
         <div className="relative mt-28 lg:mt-40 xl:mt-56">
           <Image
@@ -94,6 +93,7 @@ function SectionInfo({ className }: { className?: string }) {
             ></video>
           </div>
         </div>
+        <Progress />
       </div>
       <div className="col-start-1 row-start-2 flex flex-col gap-1 md:gap-2">
         <p>
