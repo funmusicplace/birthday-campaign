@@ -91,7 +91,7 @@ export default async function Progress() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 bg-[rgb(106,129,99)]">
       <div className="flex flex-col gap-2">
         <label className="font-bold" htmlFor="progress">
           {totalDonations} of {CAMPAIGN_GOAL} supporters
